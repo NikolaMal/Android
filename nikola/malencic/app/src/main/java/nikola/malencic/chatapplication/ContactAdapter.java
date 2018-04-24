@@ -112,7 +112,7 @@ public class ContactAdapter extends BaseAdapter implements View.OnClickListener{
 
         if(v.getId() == R.id.itemSend){
 
-            editor.putString("receiver_id", null);
+            editor.putString("receiver_id", contacts.get(clickedPosition).getId());
             editor.apply();
             Intent intent = new Intent(aContext.getApplicationContext(), MessageActivity.class);
             intent.putExtra("clickedContactName", whichContactClicked);

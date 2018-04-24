@@ -94,10 +94,16 @@ public class ContactDbHelper extends SQLiteOpenHelper {
 
     public Message[] readMessages(String sender, String receiver){
         SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
         //Cursor cursor = db.query(TABLE_NAME_MESSAGE,  null, "sender_id =? AND receiver_id =?" , new String[]{sender, receiver}, null, null, null, null);
-        Cursor cursor = db.query(TABLE_NAME_MESSAGE, null, "sender_id=? AND receiver_id=?", new String[] {sender, receiver}, null, null, null, null);        if(cursor.getCount() <= 0){
+        if(sender!=null && receiver!=null){
+            cursor = db.query(TABLE_NAME_MESSAGE, null, "(sender_id=? AND receiver_id=?) OR (sender_id=? AND receiver_id=?)", new String[] {sender, receiver, receiver, sender}, null, null, null, null);
+        }
+
+        if(cursor.getCount() <= 0){
             return null;
         }
+
 
         Message[] messages = new Message[cursor.getCount()];
         int i=0;

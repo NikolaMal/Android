@@ -51,9 +51,6 @@ public class MessageActivity extends Activity implements View.OnClickListener{
 
         Intent contact_intent = getIntent();
 
-        Message wlcm = new Message(null, sender_id, receiver_id, "Hello");
-        contactDb_helper.insertMessage(wlcm);
-
         labelText.setText(contact_intent.getStringExtra("clickedContactName"));
 
         ListView messageList = (ListView) findViewById(R.id.message_list);
@@ -62,7 +59,11 @@ public class MessageActivity extends Activity implements View.OnClickListener{
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
+
+                Message[] messages = contactDb_helper.readMessages(sender_id, receiver_id);
+
                 myAdapter.removeMessage(position);
+                contactDb_helper.deleteMessage(messages[position].getId());
                 return true;
             }});
 
@@ -106,9 +107,11 @@ public class MessageActivity extends Activity implements View.OnClickListener{
                 startActivity(logoutIntent);
                 break;
             case R.id.message_sendbutton:
-                contactDb_helper.insertMessage(new Message(null, sender_id, receiver_id, messageText.getText().toString()));
+                Message msg = new Message(null, sender_id, receiver_id, messageText.getText().toString());
+                contactDb_helper.insertMessage(msg);
                 Toast.makeText(MessageActivity.this, "Message sent!",
                         Toast.LENGTH_LONG).show();
+                myAdapter.addMessage(msg);
                 break;
         }
     }

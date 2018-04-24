@@ -91,7 +91,7 @@ public class MessageAdapter extends BaseAdapter {
         holder.id = message.getSenderId();
         SharedPreferences prefs = aContext.getSharedPreferences(PREFS_NAME, aContext.MODE_PRIVATE);
 
-        if(holder.id == prefs.getString("logged_user_id", null)){
+        if(holder.id.equals(prefs.getString("logged_user_id", null))){
             holder.msg.setGravity(Gravity.END|Gravity.CENTER);
             holder.msg.setTextColor(Color.rgb(0, 0, 0));
             holder.msg.setBackgroundColor(Color.rgb(170, 170, 170));
